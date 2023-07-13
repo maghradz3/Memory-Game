@@ -9,3 +9,18 @@
     background: #1b1523;
     color: #fff;
   }
+
+
+
+  @media(max-width:880px) {
+    body {
+      font-size: 1.1rem;
+    }
+  }
+
+  @media(max-width:496px) {
+    body {
+      font-size: 0.8rem
+    }
+
+  }

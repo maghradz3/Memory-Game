@@ -37,3 +37,29 @@ button:hover {
     align-items: center;
     gap: 20px;
 }
+
+
+@media(max-width:880px) {
+    .App {
+        padding: 20px 100px;
+    }
+
+}
+
+
+
+@media(max-width:496px) {
+    .App {
+        padding: 20px 40px;
+
+    }
+
+    h1 {
+        font-size: 0.9rem;
+    }
+
+    .cardGrid {
+        grid-gap: 10px;
+    }
+
+}

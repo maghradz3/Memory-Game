@@ -108,7 +108,7 @@ function App() {
   console.log(showRulesmodal);
   console.log("rules", rules);
 
-  const finalResult = player1Turns > player2Turns ? "player 1" : "player 2";
+  const finalResult = player1Turns < player2Turns ? "player 1" : "player 2";
 
   return (
     <div className="App">

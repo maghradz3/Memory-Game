@@ -25,7 +25,7 @@ export const Modal = ({ finalResult, onClose }) => {
     <>
       <div className="blurBackground">
         <div className="ResultContainer">
-          <h1>Winner is - {finalResult}</h1>
+          <h1>Loser is - {finalResult}</h1>
           <p style={{ color: "black" }}>{generatedWish}</p>
 
           <button style={{ color: "black" }} onClick={onClose}>
