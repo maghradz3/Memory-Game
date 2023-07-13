@@ -7,6 +7,7 @@ export const CardItem = ({ card, handleChoice, flipped, disabled }) => {
       handleChoice(card);
     }
   };
+
   return (
     // <div className={classes.cardGrid}>
     <div className={classes.card} key={card.id}>

@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import "./App.css";
 import { useState } from "react";
 import { CardItem } from "./components/CardItem";
+import { Modal } from "./components/Modal";
+import { Rules } from "./components/Rules";
+import { LangMode } from "./components/LangMode";
 
 const cardImages = [
   { src: "/img/helmet-1.png", matched: false },
@@ -18,6 +21,12 @@ function App() {
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
   const [disabled, setDisabled] = useState(false);
+  const [player1Turns, setPlayer1Turns] = useState(null);
+  const [player2Turns, setPlayer2Turns] = useState(null);
+  const [showmodal, setShowModal] = useState(false);
+  const [showRulesmodal, setShowRulesModal] = useState(false);
+  const [rules, setRules] = useState(false);
+  const [georgianLanguage, setGeorgianLanguage] = useState(false);
 
   const shuffleCards = () => {
     const shuffleCards = [...cardImages, ...cardImages]
@@ -28,6 +37,16 @@ function App() {
     setChoiceTwo(null);
     setFinalCards(shuffleCards);
     setTurns(0);
+  };
+
+  const GameRestarter = () => {
+    shuffleCards();
+    // setChoiceOne(null);
+    // setChoiceTwo(null);
+    // setFinalCards(shuffleCards);
+    // setTurns(0);
+    setPlayer1Turns(null);
+    setPlayer2Turns(null);
   };
 
   const handleChoice = (card) => {
@@ -59,6 +78,8 @@ function App() {
     }
   }, [choiceOne, choiceTwo]);
 
+  const allMatchedFalse = finalCards.every((card) => card.matched === true);
+
   //Reset cards
   const resetTurn = () => {
     setChoiceOne(null);
@@ -70,14 +91,87 @@ function App() {
   //Restart New Game Automaticly
   useEffect(() => {
     shuffleCards();
+    setPlayer1Turns(null);
+    setPlayer2Turns(null);
   }, []);
 
-  console.log(finalCards);
+  const handlePlayer1 = () => {
+    setPlayer1Turns(turns);
+    shuffleCards();
+  };
+
+  const handlePlayer2 = () => {
+    setPlayer2Turns(turns);
+    shuffleCards();
+    setShowModal(true);
+  };
+  console.log(showRulesmodal);
+  console.log("rules", rules);
+
+  const finalResult = player1Turns > player2Turns ? "player 1" : "player 2";
 
   return (
     <div className="App">
-      <h1>Magic Match</h1>
-      <button onClick={shuffleCards}>New Game</button>
+      <div>
+        <LangMode
+          content={"Memory Game"}
+          georgianLanguage={georgianLanguage}
+          setGeorgianLanguage={setGeorgianLanguage}
+        />
+      </div>
+      <div>
+        <button onClick={GameRestarter}>
+          {georgianLanguage ? "ახალი თამაში" : "New Game"}
+        </button>
+        <button
+          onClick={() => {
+            setShowRulesModal(true);
+            setRules(true);
+          }}
+        >
+          {georgianLanguage ? "წესები" : "Rules"}
+        </button>
+      </div>
+      {showRulesmodal && (
+        <>
+          {rules && (
+            <Rules
+              georgianLanguage={georgianLanguage}
+              onClose={() => setShowRulesModal(false)}
+            />
+          )}
+        </>
+      )}
+      <div className="PlayersContainer">
+        <h1>
+          {georgianLanguage ? "მოთამაშე 1 :" : "Player 1 :"} {player1Turns}
+        </h1>
+        <h1>
+          {georgianLanguage ? "მოთამაშე 2 :" : "Player 2 :"} {player2Turns}
+        </h1>
+      </div>
+      <p>
+        {georgianLanguage ? "ცდა :" : "Turns :"} {turns}
+      </p>
+
+      {allMatchedFalse && player1Turns === null && (
+        <button onClick={handlePlayer1}>
+          {georgianLanguage ? "შემდეგი მოთამაშე" : "Next Player"}
+        </button>
+      )}
+      {allMatchedFalse && player1Turns !== null && (
+        <button onClick={handlePlayer2}>
+          {georgianLanguage ? "შედეგების ნახვა" : "Show Results :"}
+        </button>
+      )}
+      {showmodal && (
+        <Modal
+          finalResult={finalResult}
+          onClose={() => {
+            setShowModal(false);
+          }}
+        />
+      )}
       <div className="cardGrid">
         {finalCards.map((card) => (
           <CardItem
@@ -89,7 +183,6 @@ function App() {
           />
         ))}
       </div>
-      <p>Turns: {turns}</p>
     </div>
   );
 }
